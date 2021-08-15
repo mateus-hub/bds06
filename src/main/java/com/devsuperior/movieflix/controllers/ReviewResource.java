@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +21,13 @@ import com.devsuperior.movieflix.services.ReviewService;
 public class ReviewResource {
 
 	@Autowired
-	private ReviewService service;
+	private ReviewService reviewService;
 
+	@PreAuthorize("hasAnyRole('MEMBER')")
 	@PostMapping()
 	public ResponseEntity<ReviewDTO> insert(@Valid @RequestBody ReviewDTO dto) {
-		dto = service.insert(dto);
+		dto = reviewService.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
-	}
-	
-
-	
+	}	
 }
