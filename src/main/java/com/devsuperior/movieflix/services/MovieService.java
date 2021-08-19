@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.movieflix.dto.MovieDTO;
+import com.devsuperior.movieflix.dto.MovieGenreDTO;
 import com.devsuperior.movieflix.entities.Genre;
 import com.devsuperior.movieflix.entities.Movie;
 import com.devsuperior.movieflix.repositories.GenreRepository;
@@ -24,9 +25,7 @@ public class MovieService {
 	@Autowired
 	private GenreRepository genreRepository;
 	
-
 	
-	//@PreAuthorize("hasAnyRole('MEMBER','VISITOR')")
 	@Transactional(readOnly = true)
 	public MovieDTO findById(Long id) {
 		Optional<Movie> obj = movieRepository.findById(id);
@@ -35,12 +34,9 @@ public class MovieService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<MovieDTO> findByGenre(Long genreId, Pageable pageable) {
+	public Page<MovieGenreDTO> findByGenre(Long genreId, Pageable pageable) {
 	 	Genre genres = (genreId == 0) ? null : genreRepository.getOne(genreId);
 	 	Page<Movie> page = movieRepository.findByGenre(genres, pageable);
-	 	return page.map(x -> new MovieDTO(x));
+	 	return page.map(x -> new MovieGenreDTO(x));
 	}
-	
-	
-	
 }

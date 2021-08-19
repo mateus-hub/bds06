@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devsuperior.movieflix.dto.MovieDTO;
+import com.devsuperior.movieflix.dto.MovieGenreDTO;
 import com.devsuperior.movieflix.dto.ReviewDTO;
 import com.devsuperior.movieflix.services.MovieService;
 import com.devsuperior.movieflix.services.ReviewService;
@@ -34,13 +35,12 @@ public class MovieController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<MovieDTO>> findByGenre(
+	public ResponseEntity<Page<MovieGenreDTO>> findByGenre(
 	          	@RequestParam(value = "genreId", defaultValue = "0") Long genreId,
-	          	/*@RequestParam(value = "name", defaultValue = "") String name,*/
 	          	Pageable pageable) {
 	   	
-	   	Page<MovieDTO> list = service.findByGenre(genreId, pageable);         	
-	   	return ResponseEntity.ok().body(list);
+	   	Page<MovieGenreDTO> list = service.findByGenre(genreId, pageable);         	
+	   	return ResponseEntity.ok(list);
 	}
 	
 	
